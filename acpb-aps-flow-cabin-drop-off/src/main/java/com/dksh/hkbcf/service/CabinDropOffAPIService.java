@@ -1,0 +1,11 @@
+package com.dksh.hkbcf.service;
+
+import com.dksh.hkbcf.controller.CabinDropOffController;
+
+public interface CabinDropOffAPIService {
+    CabinDropOffController.NotifyCPVACSVehicleArrivedCabinDoorResponse notifyCPVACSVehicleArrivedCabinDoor(CabinDropOffController.NotifyCPVACSVehicleArrivedCabinDoorRequest request);
+    CabinDropOffController.SendMPSArrivedCabinVehicleInfoResponse sendMPSArrivedCabinVehicleInfo(CabinDropOffController.SendMPSArrivedCabinVehicleInfoRequest request);
+    CabinDropOffController.EnquiryMPSCabinStatusResponse enquiryMPSCabinStatus(CabinDropOffController.EnquiryMPSCabinStatusRequest request);
+    CabinDropOffController.InformMPSCabinReadyResponse informMPSCabinReady(CabinDropOffController.InformMPSCabinReadyRequest request);
+    CabinDropOffController.NotifyDropOffCompleteResponse notifyDropOffComplete(CabinDropOffController.NotifyDropOffCompleteRequest request);
+}

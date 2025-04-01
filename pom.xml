@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.dksh.hkbcf</groupId>
+    <artifactId>acpb-aps</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>common-framework</module>
+        <module>acpb-aps-bom</module>
+        <module>acpb-aps-flow-master</module>
+        <module>acpb-aps-flow-booking</module>
+        <module>acpb-aps-feign-client</module>
+        <module>acpb-aps-flow-entry</module>
+        <module>acpb-aps-flow-cabin-drop-off</module>
+        <module>acpb-aps-flow-cabin-pick-up</module>
+        <module>acpb-aps-flow-exit</module>
+        <module>acpb-aps-flow-cabin-other</module>
+        <module>acpb-aps-flow-other</module>
+        <module>acpb-aps-flow-unexpect</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.boot.version>3.1.5</spring.boot.version>
+        <revision>01</revision>
+    </properties>
+
+</project>
