@@ -8,6 +8,15 @@ import com.dksh.hkbcf.mps.client.MPSClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for Feign clients.
+ * Enables Feign clients for various services:
+ * - CPVACS Service Client
+ * - CPVACS Auth Client
+ * - BOSS Client
+ * - ICK Client
+ * - MPS Client
+ */
 @Configuration
 //@EnableFeignClients(basePackages="com.dksh.hkbcf.*.client")
 //@EnableFeignClients(basePackages="com.dksh.hkbcf")
