@@ -85,8 +85,11 @@ public class CabinDropOffController {
         private String assignedVehicleMacao;
         private String assignedDatetime;
         private String bookingId;
+        // Brian 2025-04-01 3.10
+        private String primaryVehicleRegion;
     }
 
+    // 3.10. CPVACS Enquiry MPS Cabin Status
     @PostMapping("/enquiryMPSCabinStatus")
     public EnquiryMPSCabinStatusResponse enquiryMPSCabinStatus(@RequestBody EnquiryMPSCabinStatusRequest request) {
         return cabinDropOffAPIService.enquiryMPSCabinStatus(request);

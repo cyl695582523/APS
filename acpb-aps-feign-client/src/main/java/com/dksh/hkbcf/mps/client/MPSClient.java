@@ -251,6 +251,8 @@ public interface MPSClient {
         private String assignedVehicleMacao;
         private String assignedDatetime;
         private String bookingId;
+        // Brian 2025-04-01 3.10
+        private String primaryVehicleRegion;
     }
 
     @PostMapping(value = "/enquiryMPSCabinStatus", headers = {"x-api-key=${mpsClient.apiKey}"})
