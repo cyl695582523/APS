@@ -75,6 +75,8 @@ public class BookingAPIServiceImpl implements BookingAPIService{
                                 .parkingTo(booking.getParkingTo())
                                 .lastModifiedTime(booking.getLastModifiedTime())
                                 .bookingStatus(booking.getBookingStatus())
+                                // Brian 2025-05-06 BOSS-001
+                                .primaryVehicleRegion(booking.getPrimaryVehicleRegion())
                                 .build()).collect(Collectors.toList()))
                 .build();
 

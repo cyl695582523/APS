@@ -91,6 +91,8 @@ public interface BOSSClient {
             private String parkingTo;
             private String lastModifiedTime;
             private String bookingStatus;
+            // Brian 2025-05-06 BOSS-001
+            private String primaryVehicleRegion;
         }
     }
 
