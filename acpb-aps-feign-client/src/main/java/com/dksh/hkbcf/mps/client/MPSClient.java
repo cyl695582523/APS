@@ -164,7 +164,7 @@ public interface MPSClient {
             private String status;
             private String checkpoint;
             private String location;
-            private MoreInfo moreInfo;
+            private List<MoreInfo> moreInfo;
             private String remark;
             private String eventDate;
             private String eventTime;
@@ -409,4 +409,32 @@ public interface MPSClient {
     @PostMapping(value = "/updateMPSGateStatus", headers = {"x-api-key=${mpsClient.apiKey}"})
     CommonResponse<UpdateMPSGateStatusResponse> updateMPSGateStatus(@RequestBody UpdateMPSGateStatusRequest request);
 
+    //2.13.查询VRN车牌信息
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class EnquiryPrimaryVehicleRequest {
+        private String bookingId;
+        private String vehicleHongkong;
+        private String vehicleMainland;
+        private String vehicleMacao;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class EnquiryPrimaryVehicleResponse extends DataCommonResponse {
+        private String bookingId;
+        /**
+         * Primary vehicle region in JSON format: {"cn","hk","mo"}
+         */
+        private String primaryVehicleRegion;
+    }
+
+    @PostMapping(value = "/enquiryPrimaryVehicle", headers = {"x-api-key=${mpsClient.apiKey}"})
+    CommonResponse<EnquiryPrimaryVehicleResponse> enquiryPrimaryVehicle(@RequestBody EnquiryPrimaryVehicleRequest request);
+
+    
 }

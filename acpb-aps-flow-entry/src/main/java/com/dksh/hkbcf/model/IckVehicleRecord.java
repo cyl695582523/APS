@@ -68,7 +68,15 @@ public class IckVehicleRecord {
     @Column
     Integer ickVehicleRecordProcessEventId;
 
-//
+    @Column 
+    String bookingId;
+
+    @Column
+    Integer handicapped;
+
+    @Column
+    String primaryVehicleRegion;
+    
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumns({
 //            @JoinColumn(name="vehicleHongkong")

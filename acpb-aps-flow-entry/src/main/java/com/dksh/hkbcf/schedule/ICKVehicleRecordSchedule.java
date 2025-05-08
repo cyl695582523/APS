@@ -10,6 +10,7 @@ import com.dksh.hkbcf.model.IckVehicleRecordSyncEvent;
 import com.dksh.hkbcf.repository.IckVehicleRecordProcessEventRepository;
 import com.dksh.hkbcf.repository.IckVehicleRecordRepository;
 import com.dksh.hkbcf.repository.IckVehicleRecordSyncEventRepository;
+import com.dksh.hkbcf.repository.IckVehicleRepository;
 import com.dksh.hkbcf.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class ICKVehicleRecordSchedule {
     @Autowired
     MPSClient mpsClient;
 
+    // Brian 2025-05-08 For save ick_vehicle
+    @Autowired
+    IckVehicleRepository ickVehicleRepository;
+
     @Autowired
     IckVehicleRecordRepository ickVehicleRecordRepository;
 
@@ -41,9 +46,11 @@ public class ICKVehicleRecordSchedule {
     @Autowired
     IckVehicleRecordProcessEventRepository ickVehicleRecordProcessEventRepository;
 
+
+
     @Autowired Environment env;
 
-//    @Scheduled(fixedRate = 60000, initialDelay = 1000)
+    //@Scheduled(fixedRate = 60000, initialDelay = 1000)
     @Transactional
     public void sync (){
 
@@ -66,8 +73,9 @@ public class ICKVehicleRecordSchedule {
                 .endTime(requestEndTimeStr)
                 .build();
         
+        // Get Data from ICK
         ICKClient.Ick1Response ick1Response = ickClient.ick1ver1(ick1Request);
-
+        
         // save ick_vehicle_record
         List<IckVehicleRecord> ickVehicleRecordList1 = ickVehicleRecordRepository.saveAll(ick1Response.getData().getEvents().stream().map(event ->
                 IckVehicleRecord.builder()
@@ -81,6 +89,9 @@ public class ICKVehicleRecordSchedule {
                         .height(event.getHeight())
                         .secondSearchFlag(event.getSecondSearchFlag())
                         .clearanceFlag(event.getClearanceFlag())
+                        .bookingId(event.getBookingId())
+                        .handicapped(event.getHandicapped())
+                        .primaryVehicleRegion(event.getPrimaryVehicleRegion())
                         .build()).collect(Collectors.toList()));
 
         Instant eventDateEnd = Instant.now();
@@ -103,7 +114,7 @@ public class ICKVehicleRecordSchedule {
     }
 
 //    @Scheduled(fixedRate = 120000, initialDelay = 10000)
-//    @Scheduled(fixedRate = 60000, initialDelay = 1000)
+    //@Scheduled(fixedRate = 60000, initialDelay = 1000)
     @Transactional
     public void process (){
         
@@ -166,9 +177,6 @@ public class ICKVehicleRecordSchedule {
                                         .length(dto.ivr().getLength())
                                         .width(dto.ivr().getWidth())
                                 .build());
-
-
-
                     /*
                     !isNewIckRecord
                         isSecondSearchFlagUpdated
@@ -278,10 +286,17 @@ public class ICKVehicleRecordSchedule {
                     ickVehicle.setSecondSearchEventTime(dto.ivr().getSecondSearchEventTime());
                     ickVehicle.setIckVehicleRecordSyncEventId(dto.ivr().getIckVehicleRecordSyncEventId());
                     ickVehicle.setIckVehicleRecordProcessEventId(ickVehicleRecordProcessEvent.getIckVehicleRecordProcessEventId());
+                    // Brian 2025-05-08 For save ick_vehicle
+                    ickVehicle.setBookingId(dto.ivr().getBookingId());
+                    ickVehicle.setHandicapped(dto.ivr().getHandicapped());
+                    ickVehicle.setPrimaryVehicleRegion(dto.ivr().getPrimaryVehicleRegion());
 
+                    // Brian 2025-05-08 For save ick_vehicle
+                    ickVehicleRepository.save(ickVehicle);
+                    
                     // update ick_vehicle_record
                     dto.ivr().setIckVehicleRecordProcessEventId(ickVehicleRecordProcessEvent.getIckVehicleRecordProcessEventId());
-
+                    
                 }
         );
     }

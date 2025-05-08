@@ -53,9 +53,12 @@ public class BookingController {
             private String parkingTo;
             private String lastModifiedTime;
             private String bookingStatus;
+            
+            // Brian 2025-05-06 BOSS-001
+            private String primaryVehicleRegion;
         }
     }
-
+    // 3.19. MPS Create Booking Information
     @PostMapping("/fetchCreateBOSSBooking")
     public FetchCreateBOSSBookingResponse fetchCreateBOSSBooking(@RequestBody FetchCreateBOSSBookingRequest request) throws Exception {
         return bookingAPIService.fetchCreateBOSSBooking(request);

@@ -56,6 +56,11 @@ public interface ICKClient {
                 private Integer height;
                 private Integer secondSearchFlag;
                 private Integer clearanceFlag;
+
+                // Brian 2025-04-08 3.20 CPVACS/BOSS Enquiry Vehicle Tracking Information
+                private String bookingId;
+                private Integer handicapped;
+                private String primaryVehicleRegion;
             }
         }
     }
@@ -95,6 +100,11 @@ public interface ICKClient {
                 private Integer secondSearchFlag;
                 private Integer clearanceFlag;
                 private String more;
+
+                // Brian 2025-04-08 3.20 CPVACS/BOSS Enquiry Vehicle Tracking Information
+                private String bookingId;
+                private String handicapped;
+                private String primaryVehicleRegion;
             }
         }
     }
