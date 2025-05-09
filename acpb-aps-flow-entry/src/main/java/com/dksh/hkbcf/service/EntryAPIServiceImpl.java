@@ -83,17 +83,33 @@ public class EntryAPIServiceImpl implements EntryAPIService{
 
     @Override
     public EntryController.RequestMPSCabinResponse requestMPSCabin(EntryController.RequestMPSCabinRequest req1) {
-        MPSClient.CommonResponse<MPSClient.RequestAllocationMpsCabinResponse> res2 = mpsClient.requestAllocationMpsCabin(ObjectMapperUtil.clone(req1, MPSClient.RequestAllocationMpsCabinRequest.class));
+        // Call MPS 2.13 API to get primary vehicle region
+        MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
+            MPSClient.EnquiryPrimaryVehicleRequest.builder()
+                .bookingId(req1.getBookingId())
+                .vehicleHongkong(req1.getVehicleHongkong())
+                .vehicleMainland(req1.getVehicleMainland())
+                .vehicleMacao(req1.getVehicleMacao())
+                .build()
+        );
 
+        // original MPS cabin request
+        MPSClient.CommonResponse<MPSClient.RequestAllocationMpsCabinResponse> res2 = mpsClient.requestAllocationMpsCabin(ObjectMapperUtil.clone(req1, MPSClient.RequestAllocationMpsCabinRequest.class));
+         
         EntryController.RequestMPSCabinResponse res1 = null;
 
         if(res2.getData()==null){
             res1 = EntryController.RequestMPSCabinResponse.builder().build();
             res1.setResultCode(0);
             res1.setResultMessage(res2.getMsg());
-        }
-        else
+        }  
+        else{
             res1 = ObjectMapperUtil.clone(res2.getData(), EntryController.RequestMPSCabinResponse.class);
+
+            if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
+                res1.setPrimaryVehicleRegion(primaryVehicleRes.getData().getPrimaryVehicleRegion());
+            }
+        }
 
         return res1;
     }

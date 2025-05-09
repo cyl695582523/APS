@@ -103,9 +103,6 @@ public interface MPSClient {
         private Integer height;
         private Integer length;
         private Integer width;
-        // Brian 2025-03-31 3.6
-        private String bookingId;        
-        private String cabinId;
     }
     
 
@@ -251,10 +248,13 @@ public interface MPSClient {
         private String assignedVehicleMacao;
         private String assignedDatetime;
         private String bookingId;
-        // Brian 2025-04-01 3.10
-        private String primaryVehicleRegion;
+        // // 2025-05-09 tbc
+        // private String mode;
+        // private String status;
+
     }
 
+    // 2.7. 查询入口状态
     @PostMapping(value = "/enquiryMPSCabinStatus", headers = {"x-api-key=${mpsClient.apiKey}"})
     CommonResponse<EnquiryMPSCabinStatusResponse> enquiryMPSCabinStatus(@RequestBody EnquiryMPSCabinStatusRequest request);
 
