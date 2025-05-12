@@ -319,6 +319,9 @@ public interface MPSClient {
         private String parkInDatetime;
         private String remark;
         private String bookingId;
+        // Brian 2025-05-12 3.13
+        private String parkingFrom;
+        private String parkingTo;        
     }
 
     @PostMapping(value = "/queryVehicleInfo", headers = {"x-api-key=${mpsClient.apiKey}"})

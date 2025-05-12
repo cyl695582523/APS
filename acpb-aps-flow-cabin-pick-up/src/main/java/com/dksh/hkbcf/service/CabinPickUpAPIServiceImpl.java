@@ -40,7 +40,23 @@ public class CabinPickUpAPIServiceImpl implements CabinPickUpAPIService{
     @Override
     public CabinPickUpController.EnquiryVehicleStatusResponse enquiryVehicleStatus(CabinPickUpController.EnquiryVehicleStatusRequest req1) {
         MPSClient.CommonResponse<MPSClient.QueryVehicleInfoResponse> res2 = mpsClient.queryVehicleInfo(ObjectMapperUtil.clone(req1, MPSClient.QueryVehicleInfoRequest.class));
-        return ObjectMapperUtil.clone(res2.getData(), CabinPickUpController.EnquiryVehicleStatusResponse.class);
+        
+        //return ObjectMapperUtil.clone(res2.getData(), CabinPickUpController.EnquiryVehicleStatusResponse.class);
+        // Call MPS 2.13 API to get primary vehicle region
+        MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
+            MPSClient.EnquiryPrimaryVehicleRequest.builder()
+                .bookingId(res2.getData().getBookingId())
+                .vehicleHongkong(res2.getData().getVehicleHongkong())
+                .vehicleMainland(res2.getData().getVehicleMainland())
+                .vehicleMacao(res2.getData().getVehicleMacao())
+                .build()
+        );
+
+        CabinPickUpController.EnquiryVehicleStatusResponse response = ObjectMapperUtil.clone(res2.getData(), CabinPickUpController.EnquiryVehicleStatusResponse.class);
+        if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
+            response.setPrimaryVehicleRegion(primaryVehicleRes.getData().getPrimaryVehicleRegion());
+        }
+        return response;
     }
 
     @Override

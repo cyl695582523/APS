@@ -51,8 +51,13 @@ public class CabinPickUpController {
         private String parkInDatetime;
         private String remark;
         private String bookingId;
-    }
 
+        // Brian 2025-05-12 3.13
+        private String parkingFrom;
+        private String parkingTo;
+        private String primaryVehicleRegion;
+    }
+    // 3.13. CPVACS Enquiry MPS Vehicle Status
     @PostMapping("/enquiryVehicleStatus")
     public EnquiryVehicleStatusResponse enquiryVehicleStatus(@RequestBody EnquiryVehicleStatusRequest request) {
         return cabinPickUpAPIService.enquiryVehicleStatus(request);
