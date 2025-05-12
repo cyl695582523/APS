@@ -58,7 +58,22 @@ public class CabinDropOffAPIServiceImpl implements CabinDropOffAPIService{
     @Override
     public CabinDropOffController.EnquiryMPSCabinStatusResponse enquiryMPSCabinStatus(CabinDropOffController.EnquiryMPSCabinStatusRequest req1) {
         MPSClient.CommonResponse<MPSClient.EnquiryMPSCabinStatusResponse> res2 = mpsClient.enquiryMPSCabinStatus(ObjectMapperUtil.clone(req1, MPSClient.EnquiryMPSCabinStatusRequest.class));
-        return ObjectMapperUtil.clone(res2.getData(), CabinDropOffController.EnquiryMPSCabinStatusResponse.class);
+        // Call MPS 2.13 API to get primary vehicle region
+        MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
+            MPSClient.EnquiryPrimaryVehicleRequest.builder()
+                .bookingId(res2.getData().getBookingId())
+                .vehicleHongkong(res2.getData().getAssignedVehicleHongkong())
+                .vehicleMainland(res2.getData().getAssignedVehicleMainland())
+                .vehicleMacao(res2.getData().getAssignedVehicleMacao())
+                .build()
+        );
+
+        CabinDropOffController.EnquiryMPSCabinStatusResponse response = ObjectMapperUtil.clone(res2.getData(), CabinDropOffController.EnquiryMPSCabinStatusResponse.class);
+        if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
+            response.setPrimaryVehicleRegion(primaryVehicleRes.getData().getPrimaryVehicleRegion());
+        }
+        return response;
+        
     }
 
     @Override
