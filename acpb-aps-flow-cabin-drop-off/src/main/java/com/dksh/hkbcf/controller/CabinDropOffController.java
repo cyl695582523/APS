@@ -109,6 +109,8 @@ public class CabinDropOffController {
         private String bookingId;
         private String parkingRecordId;
         private String parkInDatetime;
+        // Brian 2025-05-01 3.11
+        private String remark;
     }
 
     @Data
@@ -122,8 +124,11 @@ public class CabinDropOffController {
         private String vehicleMacao;
         private String bookingId;
         private String parkingRecordId;
+        // Brian 2025-05-12 3.11
+        private String primaryVehicleRegion;
     }
 
+    //3.11. CPVACS Inform MPS Cabin Ready
     @PostMapping("/informMPSCabinReady")
     public InformMPSCabinReadyResponse informMPSCabinReady(@RequestBody InformMPSCabinReadyRequest request) {
         return cabinDropOffAPIService.informMPSCabinReady(request);

@@ -92,8 +92,22 @@ public class CabinDropOffAPIServiceImpl implements CabinDropOffAPIService{
         req3.setMoreInfo(BOSSClient.IntApsBoss005Request.MoreInfo.builder().cabinNo(req1.getCabinId()).build());
         req3.setEventId(Instant.now().toEpochMilli()+"");
         BOSSClient.CommonResponse<BOSSClient.IntApsBoss005Response> res3 = bossClient.intApsBoss005(req1.getBookingId(), req3);
+        // Call MPS 2.13 API to get primary vehicle region
+        MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
+            MPSClient.EnquiryPrimaryVehicleRequest.builder()
+                .bookingId(req1.getBookingId())
+                .vehicleHongkong(req1.getVehicleHongkong())
+                .vehicleMainland(req1.getVehicleMainland())
+                .vehicleMacao(req1.getVehicleMacao())
+                .build()
+        );
 
-        return ObjectMapperUtil.clone(req1, CabinDropOffController.InformMPSCabinReadyResponse.class);
+        CabinDropOffController.InformMPSCabinReadyResponse response = ObjectMapperUtil.clone(req1, CabinDropOffController.InformMPSCabinReadyResponse.class);
+        if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
+            response.setPrimaryVehicleRegion(primaryVehicleRes.getData().getPrimaryVehicleRegion());
+        }
+        return response;
+    // return ObjectMapperUtil.clone(req1, CabinDropOffController.InformMPSCabinReadyResponse.class);
     }
 
     @Override
