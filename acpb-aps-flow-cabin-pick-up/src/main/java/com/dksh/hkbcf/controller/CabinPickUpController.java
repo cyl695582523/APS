@@ -156,9 +156,11 @@ public class CabinPickUpController {
         private String parkInDateTime;
         private Integer vehicleStatus;
         private String remark;
-        private String bookingId;
+        private String bookingId;        
+        // Brian 2025-05-12 3.15
+        private String primaryVehicleRegion;
     }
-
+  // 3.15. CPVACS Confirm MPS Pick Up Vehicle
     @PostMapping("/confirmPickUpVehicle")
     public ConfirmPickUpVehicleResponse confirmPickUpVehicle(@RequestBody ConfirmPickUpVehicleRequest request) {
         return cabinPickUpAPIService.confirmPickUpVehicle(request);

@@ -109,7 +109,21 @@ public class CabinPickUpAPIServiceImpl implements CabinPickUpAPIService{
             BOSSClient.CommonResponse<BOSSClient.IntApsBoss008Response> res2 = bossClient.intApsBoss008(req1.getBookingId(), req2);
         }
 
-        return ObjectMapperUtil.clone(res3.getData(), CabinPickUpController.ConfirmPickUpVehicleResponse.class);
+        // Call MPS 2.13 API to get primary vehicle region
+        MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
+            MPSClient.EnquiryPrimaryVehicleRequest.builder()
+                .bookingId(req1.getBookingId())
+                .vehicleHongkong(req1.getVehicleHongkong())
+                .vehicleMainland(req1.getVehicleMainland())
+                .vehicleMacao(req1.getVehicleMacao())
+                .build()
+        );
+
+        CabinPickUpController.ConfirmPickUpVehicleResponse response = ObjectMapperUtil.clone(res3.getData(), CabinPickUpController.ConfirmPickUpVehicleResponse.class);
+        if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
+            response.setPrimaryVehicleRegion(primaryVehicleRes.getData().getPrimaryVehicleRegion());
+        }
+        return response;
     }
 
     @Override
