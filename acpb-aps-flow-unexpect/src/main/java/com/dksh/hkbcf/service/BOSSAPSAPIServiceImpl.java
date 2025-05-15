@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -34,6 +36,12 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
 
     @Override
     public BOSSAPSAPICommonResponse<BOSSAPSController.BulkExportBookingResponse> bulkExportBooking(BOSSAPSController.BulkExportBookingRequest req1) {
+        /*
+         * 1. Retrieve booking info from MPS
+         * 2. Retrieve entry and exit record from CPB           
+         * 3. Retrieve PVR from MPS
+         * 4. Response
+         */
         if(req1.getVehicleHongkong()==null) req1.setVehicleHongkong("");
         if(req1.getVehicleMainland()==null) req1.setVehicleMainland("");
         if(req1.getVehicleMacao()==null) req1.setVehicleMacao("");
@@ -47,8 +55,10 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
                 .vehicleMacao(req1.getVehicleMacao())
                 .build();
 
+        // calling 2.4.查询预约车辆活动信息 /queryReservationVehicleInfo 
         MPSClient.CommonResponse<MPSClient.QueryReservationVehicleInfoResponse> res2 = mpsClient.queryReservationVehicleInfo(req2);
 
+        // return empty response if no booking info
         if(res2.getData().getBookingInfo()==null || res2.getData().getBookingInfo().size()==0){
             return BOSSAPSAPICommonResponse.<BOSSAPSController.BulkExportBookingResponse>baseBuilder()
                     .data(BOSSAPSController.BulkExportBookingResponse.builder()
@@ -63,7 +73,7 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
         // call cpb for entry and exit record and return to BOSS
         CPVACSAuthClient.CommonResponse<CPVACSAuthClient.LoginResponse> authRes = cpvacsAuthClient.login(CPVACSAuthClient.LoginRequest.builder()
                 .username("demoApp")
-                .password("123456")
+                .password("123456") 
                 .build());
 
         CPVACSServiceClient.ListResponse<CPVACSServiceClient.Cpvacs7aResponse> res3 = cpvacsServiceClient.cpvacs7a(res2.getData().getBookingInfo().stream().map(bookingInfo -> bookingInfo.getBookingId()).distinct().collect(Collectors.joining(",")), "Bearer "+authRes.getData().getAccessToken());
@@ -78,6 +88,22 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
         res4.getData().size(); // cpb returned
 
         Integer total = res2.getData().getTotalCount()+res3.getData().size()+res4.getData().size();
+
+        // Get PVR for each booking
+        Map<String, String> bookingPvrMap = new HashMap<>();
+        for (MPSClient.QueryReservationVehicleInfoResponse.BookingInfo bookingInfo : res2.getData().getBookingInfo()) {
+            MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
+                MPSClient.EnquiryPrimaryVehicleRequest.builder()
+                    .bookingId(bookingInfo.getBookingId())
+                    .vehicleHongkong(bookingInfo.getVehicleHongkong())
+                    .vehicleMainland(bookingInfo.getVehicleMainland())
+                    .vehicleMacao(bookingInfo.getVehicleMacao())
+                    .build()
+            );
+            if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
+                bookingPvrMap.put(bookingInfo.getBookingId(), primaryVehicleRes.getData().getPrimaryVehicleRegion());
+            }
+        }
 
         List<BOSSAPSController.BulkExportBookingResponse.Event> eventList =
                 res2.getData().getBookingInfo().stream().map(bookingInfo -> {
@@ -95,10 +121,11 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
                             .remark(bookingInfo.getRemark())
                             .eventDate(bookingInfo.getEventDate()==null?null:bookingInfo.getEventDate().replaceAll("-","/").split(" ")[0])
                             .eventTime(bookingInfo.getEventTime())
-/*                                    .moreInfo(ExitController.BulkExportBookingResponse.Event.MoreInfo.builder()
+                            /*                                    .moreInfo(ExitController.BulkExportBookingResponse.Event.MoreInfo.builder()
                                             .cabinNo(bookingInfo.getMoreInfo().getCabinNo())
                                             .ickNo(bookingInfo.getMoreInfo().getIckNo())
-                                            .build())*/
+                                            .build())*/                                            
+                            .primaryVehicleRegion(bookingPvrMap.get(bookingInfo.getBookingId()))
                             .build();
                 }).collect(Collectors.toList());
 
@@ -123,6 +150,8 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
                     .remark(event.getRemark())
                     .eventDate(TimeUtil.formatMilli(cpbEntryBookingInfo.getEntryTime()==null?cpbEntryBookingInfo.getArrivedTime():cpbEntryBookingInfo.getEntryTime(), "yyyy/MM/dd"))
                     .eventTime(TimeUtil.formatMilli(cpbEntryBookingInfo.getEntryTime()==null?cpbEntryBookingInfo.getArrivedTime():cpbEntryBookingInfo.getEntryTime(), "HH:mm:ss"))
+                    // Brian 2025-05-15 
+                    .primaryVehicleRegion(event.getPrimaryVehicleRegion())
                     .build();
         }).toList());
 
@@ -153,6 +182,7 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
                     .remark(event.getRemark())
                     .eventDate(TimeUtil.formatMilli(cpbExitBookingInfo.getExitTime()==null?cpbExitBookingInfo.getArrivedTime():cpbExitBookingInfo.getExitTime(), "yyyy/MM/dd"))
                     .eventTime(TimeUtil.formatMilli(cpbExitBookingInfo.getExitTime()==null?cpbExitBookingInfo.getArrivedTime():cpbExitBookingInfo.getExitTime(), "HH:mm:ss"))
+                    .primaryVehicleRegion(event.getPrimaryVehicleRegion())
                     .build();
         }).toList());
 

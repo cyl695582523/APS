@@ -177,6 +177,7 @@ public class BOSSAPSController {
             private String eventTime;
             private String parkingRecordId;
             private String mpsRecordId;
+            private String primaryVehicleRegion;
 
             @Data
             @Builder
@@ -188,7 +189,7 @@ public class BOSSAPSController {
             }
         }
     }
-
+    //3.20. CPVACS/BOSS Enquiry Vehicle Tracking Information
     @PostMapping("/bulkExportBooking")
     public BOSSAPSAPICommonResponse<BulkExportBookingResponse> bulkExportBooking(@RequestBody BulkExportBookingRequest request) {
         return bossApsApiService.bulkExportBooking(request);
