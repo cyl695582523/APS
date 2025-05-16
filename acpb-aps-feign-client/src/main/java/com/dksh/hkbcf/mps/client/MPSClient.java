@@ -195,6 +195,8 @@ public interface MPSClient {
         private String parkingFrom;
         private String parkingToDatetime;
         private String lastModifiedTime;
+        // 2025-05-15 Brian
+        private String primaryVehicleRegion;
     }
 
     @Data

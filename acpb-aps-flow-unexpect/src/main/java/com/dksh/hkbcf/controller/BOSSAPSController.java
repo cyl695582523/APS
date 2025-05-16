@@ -211,6 +211,8 @@ public class BOSSAPSController {
         private String parkingFrom;
         private String parkingTo;
         private String lastModifiedTime;
+        // 2025-05-15 Brian
+        private String primaryVehicleRegion;
     }
 
     @Data
@@ -220,7 +222,7 @@ public class BOSSAPSController {
     public static class ChangeBookingResponse{
         private String bookingId;
     }
-
+    // 3.21. BOSS Request Change Booking Information
     @PostMapping("/changeBooking")
     public BOSSAPSAPICommonResponse<ChangeBookingResponse> changeBooking(@RequestBody ChangeBookingRequest request) {
         return bossApsApiService.changeBooking(request);
