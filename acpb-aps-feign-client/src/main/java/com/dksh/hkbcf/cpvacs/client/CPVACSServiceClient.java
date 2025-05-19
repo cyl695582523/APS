@@ -177,6 +177,23 @@ public interface CPVACSServiceClient {
     @PostMapping(value = "/server/lcd/cabin/assign/", headers = {"x-api-key=${bossClient.apiKey}"})
     CommonResponse<Cpvacs5Response> cpvacs5(@RequestBody Cpvacs5Request request, @RequestHeader("Authorization") String accessToken);
 
+    // 8. Update 32-inch LCD Display Message
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class Cpvacs8Request {
+        private String cabinId;
+        private String parkingDisplayId;
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    class Cpvacs8Response {}
+
+    @PostMapping(value = "/server/lcd/update32DisplayMsg", headers = {"x-api-key=${bossClient.apiKey}"})
+    CommonResponse<Cpvacs8Response> cpvacs8(@RequestBody Cpvacs8Request request, @RequestHeader("Authorization") String accessToken);
 
     // 6. Other Cases : Check the Status of CAS/LPR
 

@@ -7,6 +7,7 @@ import com.dksh.hkbcf.mps.client.MPSClient;
 import com.dksh.hkbcf.controller.CabinOtherController;
 import com.dksh.hkbcf.util.ObjectMapperUtil;
 import com.dksh.hkbcf.util.TimeUtil;
+import com.dksh.hkbcf.pojo.APSAPICommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -108,28 +109,27 @@ public class CabinOtherAPIServiceImpl implements CabinOtherAPIService{
         return CabinOtherController.NotifyVehicleRetrieveResponse.builder().build();
     }
 
-    //3.30  MPS update Guidance Monitor Outside Parking Cabin Message
-    // Brian 31-3-2025
     @Override
     public CabinOtherController.UpdateDropOffDisplayMsgResponse updateDropOffDisplayMsg(CabinOtherController.UpdateDropOffDisplayMsgRequest req1) {
-        return null;
-        // CPVACSAuthClient.CommonResponse<CPVACSAuthClient.LoginResponse> authRes = cpvacsAuthClient.login(CPVACSAuthClient.LoginRequest.builder()
-        //         .username("demoApp")
-        //         .password("123456")
-        //         .build());
+        CPVACSAuthClient.CommonResponse<CPVACSAuthClient.LoginResponse> authRes = cpvacsAuthClient.login(CPVACSAuthClient.LoginRequest.builder()
+                .username("demoApp")
+                .password("123456")
+                .build());
 
-        // // Call CPVACS service to update the display message
-        // CPVACSServiceClient.CommonResponse<CPVACSServiceClient.Cpvacs5Response> res2 = cpvacsServiceClient.cpvacs5(
-        //     CPVACSServiceClient.Cpvacs5Request.builder()
-        //         .cabinId(req1.getCabinId())
-        //         .build(),
-        //     "Bearer " + authRes.getData().getAccessToken()
-        // );
+        // Call CPVACS service to update the 32-inch LCD display message
+        CPVACSServiceClient.CommonResponse<CPVACSServiceClient.Cpvacs8Response> res2 = cpvacsServiceClient.cpvacs8(
+            CPVACSServiceClient.Cpvacs8Request.builder()
+                .cabinId(req1.getCabinId())
+                .parkingDisplayId(req1.getParkingDisplayId())
+                .build(),
+            "Bearer " + authRes.getData().getAccessToken()
+        );
 
-        // return CabinOtherController.UpdateDropOffDisplayMsgResponse.builder()
-        //         .resultCode(1)
-        //         .resultMessage("")
-        //         .sysDatetime(TimeUtil.format(Instant.now(), "yyyy-MM-dd HH:mm:ss"))
-        //         .build();
+        APSAPICommonResponse parentResp = APSAPICommonResponse.baseBuilder()
+            .resultCode(1)
+            .resultMessage("")
+            .sysDatetime(TimeUtil.format(Instant.now(), "yyyy-MM-dd HH:mm:ss"))
+            .build();
+        return ObjectMapperUtil.clone(parentResp, CabinOtherController.UpdateDropOffDisplayMsgResponse.class);
     }
 }

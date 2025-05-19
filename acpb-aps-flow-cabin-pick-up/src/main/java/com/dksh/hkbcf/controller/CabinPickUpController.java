@@ -63,7 +63,7 @@ public class CabinPickUpController {
         return cabinPickUpAPIService.enquiryVehicleStatus(request);
     }
 
-    // 3.28. MPS Request BOSS Validate Driver Info
+    // 3.29. MPS Request BOSS Validate Driver Info
     @Data
     @Builder
     @NoArgsConstructor

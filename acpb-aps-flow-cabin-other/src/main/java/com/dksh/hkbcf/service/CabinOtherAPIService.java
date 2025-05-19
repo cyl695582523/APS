@@ -7,8 +7,5 @@ public interface CabinOtherAPIService {
      CabinOtherController.RequestCPVACSCabinVehicleInfoResponse requestCPVACSCabinVehicleInfo(CabinOtherController.RequestCPVACSCabinVehicleInfoRequest request);
      CabinOtherController.SendAssignedPickupCabinResponse sendAssignedPickupCabin(CabinOtherController.SendAssignedPickupCabinRequest request);
      CabinOtherController.NotifyVehicleRetrieveResponse notifyVehicleRetrieve(CabinOtherController.NotifyVehicleRetrieveRequest request);
-
-     // 3.30  MPS update Guidance Monitor Outside Parking Cabin Message
      CabinOtherController.UpdateDropOffDisplayMsgResponse updateDropOffDisplayMsg(CabinOtherController.UpdateDropOffDisplayMsgRequest request);
-     
 }

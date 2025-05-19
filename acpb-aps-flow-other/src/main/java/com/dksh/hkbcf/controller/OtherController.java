@@ -21,7 +21,7 @@ public class OtherController {
     @Autowired
     OtherAPIService otherAPIService;
 
-    // 3.26. CPVACS Update MPS Gate Status
+    // 3.27. CPVACS Update MPS Gate Status
     @Data
     @Builder
     @NoArgsConstructor
@@ -47,7 +47,7 @@ public class OtherController {
         return otherAPIService.updateMPSGateStatus(request);
     }
 
-    // 3.27. MPS Request CPVACS CAS/LPRs status
+    // 3.28. MPS Request CPVACS CAS/LPRs status
     @Data
     @Builder
     @NoArgsConstructor

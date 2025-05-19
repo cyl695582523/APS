@@ -69,7 +69,7 @@ public class CabinOtherController {
         return cabinOtherAPIService.requestCPVACSCabinVehicleInfo(request);
     }
 
-    // 3.24	MPS Send CPVACS Assigned Pick Up Cabin Information
+    // 3.25	MPS Send CPVACS Assigned Pick Up Cabin Information
     @Data
     @Builder
     @NoArgsConstructor
@@ -99,7 +99,7 @@ public class CabinOtherController {
         return cabinOtherAPIService.sendAssignedPickupCabin(request);
     }
 
-    // 3.25. MPS Notify BOSS Vehicle Retrieve from MPS
+    // 3.26. MPS Notify BOSS Vehicle Retrieve from MPS
     @Data
     @Builder
     @NoArgsConstructor
@@ -125,7 +125,7 @@ public class CabinOtherController {
         return cabinOtherAPIService.notifyVehicleRetrieve(request);
     }
 
-    // 3.30. MPS Update Guidance Monitor Outside Parking Cabin Message
+
     @Data
     @Builder
     @NoArgsConstructor
@@ -139,9 +139,11 @@ public class CabinOtherController {
     @Builder
     @AllArgsConstructor
     public static class UpdateDropOffDisplayMsgResponse extends APSAPICommonResponse {}
-
+    // 3.31. MPS Update Guidance Monitor Outside Parking Cabin Message
     @PostMapping("/updateDropOffDisplayMsg")
     public UpdateDropOffDisplayMsgResponse updateDropOffDisplayMsg(@RequestBody UpdateDropOffDisplayMsgRequest request) {
         return cabinOtherAPIService.updateDropOffDisplayMsg(request);
     }
+
+
 }
