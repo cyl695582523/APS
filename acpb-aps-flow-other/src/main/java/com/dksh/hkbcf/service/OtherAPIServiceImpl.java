@@ -138,4 +138,26 @@ public class OtherAPIServiceImpl implements OtherAPIService {
                 .build();
 
     }
+
+    @Override
+    public OtherController.SendAPSAlertMsgResponse sendAPSAlertMsg(OtherController.SendAPSAlertMsgRequest request) {
+        // Call MPS API to notify about device alert
+        MPSClient.CommonResponse<MPSClient.NotifyAlarmResponse> response = mpsClient.notifyAlarm(
+            MPSClient.NotifyAlarmRequest.builder()
+                .id(Integer.parseInt(request.getAlertTransactionID()))
+                .malfunctionInfo(request.getMalfunctionInfo())
+                .deviceName(request.getDeviceName())
+                .malfunctionTime(request.getMalfunctionTime())
+                .malfunctionStatus(0) // 0: malfunction in progress
+                .recoverTime(null)
+                .malfunctionDuration(null)
+                .build()
+        );
+
+        // Map the MPS response data to our response type, following the same pattern as other endpoints
+        OtherController.SendAPSAlertMsgResponse mappedResponse = ObjectMapperUtil.clone(response.getData(), OtherController.SendAPSAlertMsgResponse.class);
+        mappedResponse.setSysDatetime(TimeUtil.format(Instant.now(), "yyyy-MM-dd HH:mm:ss"));
+        return mappedResponse;
+    }
+  
 }

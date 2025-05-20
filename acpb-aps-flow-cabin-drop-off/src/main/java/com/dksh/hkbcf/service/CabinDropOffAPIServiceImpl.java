@@ -143,4 +143,5 @@ public class CabinDropOffAPIServiceImpl implements CabinDropOffAPIService{
         BOSSClient.CommonResponse<BOSSClient.IntApsBoss005Response> res3 = bossClient.intApsBoss005(req1.getBookingId(), req3);
         return CabinDropOffController.NotifyDropOffCompleteResponse.builder().build();
     }
+
 }

@@ -441,5 +441,27 @@ public interface MPSClient {
     @PostMapping(value = "/enquiryPrimaryVehicle", headers = {"x-api-key=${mpsClient.apiKey}"})
     CommonResponse<EnquiryPrimaryVehicleResponse> enquiryPrimaryVehicle(@RequestBody EnquiryPrimaryVehicleRequest request);
 
-    
+    // 2.15. CPVACS 故障上报
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class NotifyAlarmRequest {
+        //YF API 2.15, CPVACS will not provide recover Time, malfunction Duration and malfunction status in Alerts calling.
+        private Integer id;
+        private String malfunctionInfo;
+        private String deviceName;
+        private String malfunctionTime;
+        private String recoverTime;
+        private Long malfunctionDuration;
+        private Integer malfunctionStatus;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    class NotifyAlarmResponse extends DataCommonResponse {}
+
+    @PostMapping(value = "/notifyAlarm", headers = {"x-api-key=${mpsClient.apiKey}"})
+    CommonResponse<NotifyAlarmResponse> notifyAlarm(@RequestBody NotifyAlarmRequest request);
 }

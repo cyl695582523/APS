@@ -79,4 +79,32 @@ public class OtherController {
         return otherAPIService.requestCPVACSCasInfo(request);
     }
 
+
+    // 3.33. CPVACS send APS devices alert to MPS
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SendAPSAlertMsgRequest {
+        private String alertTransactionID;
+        private String malfunctionInfo;
+        private String deviceID;
+        private String deviceName;
+        private String malfunctionTime;
+    }
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SendAPSAlertMsgResponse extends APSAPICommonResponse {
+        private Integer resultCode;
+        private String resultMessage;
+        private String sysDatetime;
+    }
+
+    @PostMapping("/sendAPSAlertMsg")
+    public SendAPSAlertMsgResponse sendAPSAlertMsg(@RequestBody SendAPSAlertMsgRequest request) {
+        return otherAPIService.sendAPSAlertMsg(request);
+    }
+
 }
