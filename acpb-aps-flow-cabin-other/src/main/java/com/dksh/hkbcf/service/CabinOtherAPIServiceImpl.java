@@ -125,13 +125,6 @@ public class CabinOtherAPIServiceImpl implements CabinOtherAPIService{
             "Bearer " + authRes.getData().getAccessToken()
         );
 
-        // APSAPICommonResponse parentResp = APSAPICommonResponse.baseBuilder()
-        //     .resultCode(1)
-        //     .resultMessage("")
-        //     .sysDatetime(TimeUtil.format(Instant.now(), "yyyy-MM-dd HH:mm:ss"))
-        //     .build();
-        // return ObjectMapperUtil.clone(parentResp, CabinOtherController.UpdateDropOffDisplayMsgResponse.class);
-
         return CabinOtherController.UpdateDropOffDisplayMsgResponse.builder().build();
     }
 }
