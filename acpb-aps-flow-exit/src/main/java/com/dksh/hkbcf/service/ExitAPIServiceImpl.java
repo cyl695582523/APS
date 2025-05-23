@@ -22,10 +22,10 @@ public class ExitAPIServiceImpl implements ExitAPIService{
         BOSSClient.IntApsBoss005Request req2 = ObjectMapperUtil.clone(req1, BOSSClient.IntApsBoss005Request.class);
         // eventId and moreInfo.ickNo tbc
         req2.setCheckpoint("BarrierGate");
-        String location = "MainExitGate";
-        if(req1.getLaneCode()!=null && req1.getLaneCode().equals("exit_0")) location = "MainExitGate0";
-        else if(req1.getLaneCode()!=null && req1.getLaneCode().equals("exit_1")) location = "MainExitGate1";
-        else if(req1.getLaneCode()!=null && req1.getLaneCode().equals("exit_2")) location = "MainExitGate2";
+        String location = "MainExitGate";      
+        if(req1.getLaneCode()!=null && req1.getLaneCode().equals("exit_0")) location = "BarrierGate22";// old (MainExitGate0) G/F
+        else if(req1.getLaneCode()!=null && req1.getLaneCode().equals("exit_1")) location = "BarrierGate25";// old (MainExitGate1) M/F
+        else if(req1.getLaneCode()!=null && req1.getLaneCode().equals("exit_2")) location = "BarrierGate27";// old (MainExitGate2) M/F Rental
         req2.setLocation(location);
         req2.setStatus("pass");
         req2.setEventDate(req1.getExitDatetime().split(" ")[0].replaceAll("-","/"));

@@ -146,7 +146,7 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
                     .mpsRecordId(event.getMpsRecordId())
                     .status("pass")
                     .checkpoint("BarrierGate")
-                    .location("MainEntryGate")
+                    .location("BarrierGate21")
                     .remark(event.getRemark())
                     .eventDate(TimeUtil.formatMilli(cpbEntryBookingInfo.getEntryTime()==null?cpbEntryBookingInfo.getArrivedTime():cpbEntryBookingInfo.getEntryTime(), "yyyy/MM/dd"))
                     .eventTime(TimeUtil.formatMilli(cpbEntryBookingInfo.getEntryTime()==null?cpbEntryBookingInfo.getArrivedTime():cpbEntryBookingInfo.getEntryTime(), "HH:mm:ss"))
