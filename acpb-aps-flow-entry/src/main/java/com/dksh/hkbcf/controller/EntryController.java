@@ -61,7 +61,7 @@ public class EntryController {
             
         }
     }
-
+    // 3.3. CPVACS Enquiry CPA-ICK Information
     @PostMapping("/enquiryCpaIckInfo")
     public EnquiryCpaIckInfoResponse enquiryCpaIckInfo(@RequestBody EnquiryCpaIckInfoRequest request) {
         return entryAPIService.enquiryCpaIckInfo(request);
@@ -111,7 +111,7 @@ public class EntryController {
         private Integer height;
         // Brian 2025-03-10 3.6
         private String bookingId;        
-        private String cabinId;
+        private Integer handicapped;
     }
 
     @Data
@@ -136,7 +136,7 @@ public class EntryController {
     public RequestMPSCabinResponse requestMPSCabin(@RequestBody RequestMPSCabinRequest request) {
         return entryAPIService.requestMPSCabin(request);
     }
-
+        
     // 3.7.	CPVACS notify Boss Vehicle Enter ACPB
     @Data
     @Builder
