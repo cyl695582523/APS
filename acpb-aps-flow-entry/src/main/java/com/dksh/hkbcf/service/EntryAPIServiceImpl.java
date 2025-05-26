@@ -2,6 +2,8 @@ package com.dksh.hkbcf.service;
 
 import com.dksh.hkbcf.boss.client.BOSSClient;
 import com.dksh.hkbcf.mps.client.MPSClient;
+import com.dksh.hkbcf.cpvacs.client.CPVACSServiceClient;
+import com.dksh.hkbcf.cpvacs.client.CPVACSAuthClient;
 import com.dksh.hkbcf.controller.EntryController;
 import com.dksh.hkbcf.model.IckVehicle;
 import com.dksh.hkbcf.model.IckVehicleRecord;
@@ -11,12 +13,14 @@ import com.dksh.hkbcf.repository.IckVehicleRecordRepository;
 import com.dksh.hkbcf.repository.IckVehicleRepository;
 import com.dksh.hkbcf.util.ObjectMapperUtil;
 import com.dksh.hkbcf.util.TimeUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.ArrayList;
 
+@Slf4j
 @Service
 public class EntryAPIServiceImpl implements EntryAPIService{
 
@@ -31,6 +35,12 @@ public class EntryAPIServiceImpl implements EntryAPIService{
 
     @Autowired
     BOSSClient bossClient;
+
+    @Autowired
+    CPVACSServiceClient cpvacsServiceClient;
+
+    @Autowired
+    CPVACSAuthClient cpvacsAuthClient;
 
     @Override
     public EntryController.EnquiryCpaIckInfoResponse enquiryCpaIckInfo(EntryController.EnquiryCpaIckInfoRequest req1) {
@@ -129,5 +139,33 @@ public class EntryAPIServiceImpl implements EntryAPIService{
             res2 = bossClient.intApsBoss005(req1.getBookingId(), req2);
         }
         return EntryController.NotifyBOSSEnterResponse.builder().build();
+    }
+
+    @Override
+    public EntryController.UpdateCPVCASCabinAvailableStatusResponse updateCPVCASCabinAvailableStatus(EntryController.UpdateCPVCASCabinAvailableStatusRequest request) {
+        try {
+          
+            CPVACSAuthClient.CommonResponse<CPVACSAuthClient.LoginResponse> authRes = cpvacsAuthClient.login(
+                CPVACSAuthClient.LoginRequest.builder()
+                    .username("demoApp")
+                    .password("123456")
+                    .build()
+            );
+
+  
+            CPVACSServiceClient.CommonResponse<CPVACSServiceClient.Cpvacs9Response> response = 
+                cpvacsServiceClient.cpvacs9(
+                    CPVACSServiceClient.Cpvacs9Request.builder()
+                        .isCabinAvailable(request.getIsCabinAvailable())
+                        .sysDatetime(request.getSysDatetime())
+                        .build(),
+                    "Bearer " + authRes.getData().getAccessToken()
+                );
+    
+            return EntryController.UpdateCPVCASCabinAvailableStatusResponse.builder().build();
+        } catch (Exception e) {
+            log.error("Failed to update CPVACS cabin available status", e);
+            throw e;
+        }
     }
 }

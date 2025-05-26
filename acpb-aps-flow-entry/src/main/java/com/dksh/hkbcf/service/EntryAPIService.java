@@ -8,4 +8,5 @@ public interface EntryAPIService {
     EntryController.UpdateCpaIckInfoResponse updateCpaIckInfo(EntryController.UpdateCpaIckInfoRequest request);
     EntryController.RequestMPSCabinResponse requestMPSCabin(EntryController.RequestMPSCabinRequest request);
     EntryController.NotifyBOSSEnterResponse notifyBOSSEnter(EntryController.NotifyBOSSEnterRequest request);
+    EntryController.UpdateCPVCASCabinAvailableStatusResponse updateCPVCASCabinAvailableStatus(EntryController.UpdateCPVCASCabinAvailableStatusRequest request);
 }

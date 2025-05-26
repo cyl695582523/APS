@@ -311,4 +311,25 @@ public interface CPVACSServiceClient {
     @GetMapping(value = "/server/lane/booking/exit/", headers = {"x-api-key=${bossClient.apiKey}"})
     ListResponse<Cpvacs7bResponse> cpvacs7b(@RequestParam(value="bookingId") String bookingId, @RequestHeader("Authorization") String accessToken);
 
+    // 9. Update Cabin Available Status
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    class Cpvacs9Request {
+        private Integer isCabinAvailable;
+        private String sysDatetime;
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    class Cpvacs9Response {}
+
+    @PostMapping(value = "/server/lane/entry/entrance/", headers = {"x-api-key=${bossClient.apiKey}"})
+    CommonResponse<Cpvacs9Response> cpvacs9(
+        @RequestBody Cpvacs9Request request,
+        @RequestHeader("Authorization") String accessToken
+    );
+
 }

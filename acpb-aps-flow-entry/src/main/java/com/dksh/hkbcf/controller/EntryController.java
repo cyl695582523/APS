@@ -109,7 +109,7 @@ public class EntryController {
         private Integer length;
         private Integer width;
         private Integer height;
-        // Brian 2025-03-10 3.6
+
         private String bookingId;        
         private Integer handicapped;
     }
@@ -161,5 +161,25 @@ public class EntryController {
     @PostMapping("/notifyBOSSEnter")
     public NotifyBOSSEnterResponse notifyBOSSEnter(@RequestBody NotifyBOSSEnterRequest request) {
         return entryAPIService.notifyBOSSEnter(request);
+    }
+
+    // Update CPVACS Cabin Available Status
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateCPVCASCabinAvailableStatusRequest {
+        private Integer isCabinAvailable;
+        private String sysDatetime;
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    public static class UpdateCPVCASCabinAvailableStatusResponse extends APSAPICommonResponse {}
+
+    @PostMapping("/updateCPVCASCabinAvailableStatus")
+    public UpdateCPVCASCabinAvailableStatusResponse updateCPVCASCabinAvailableStatus(@RequestBody UpdateCPVCASCabinAvailableStatusRequest request) {
+        return entryAPIService.updateCPVCASCabinAvailableStatus(request);
     }
 }
