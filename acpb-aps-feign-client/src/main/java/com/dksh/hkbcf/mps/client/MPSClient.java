@@ -103,6 +103,8 @@ public interface MPSClient {
         private Integer height;
         private Integer length;
         private Integer width;
+        private String bookingId;
+        private Integer handicapped;
     }
     
 
@@ -195,8 +197,6 @@ public interface MPSClient {
         private String parkingFrom;
         private String parkingToDatetime;
         private String lastModifiedTime;
-        // 2025-05-15 Brian
-        private String primaryVehicleRegion;
     }
 
     @Data
@@ -414,32 +414,6 @@ public interface MPSClient {
     @PostMapping(value = "/updateMPSGateStatus", headers = {"x-api-key=${mpsClient.apiKey}"})
     CommonResponse<UpdateMPSGateStatusResponse> updateMPSGateStatus(@RequestBody UpdateMPSGateStatusRequest request);
 
-    //2.13.查询VRN车牌信息
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    class EnquiryPrimaryVehicleRequest {
-        private String bookingId;
-        private String vehicleHongkong;
-        private String vehicleMainland;
-        private String vehicleMacao;
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    class EnquiryPrimaryVehicleResponse extends DataCommonResponse {
-        private String bookingId;
-        /**
-         * Primary vehicle region in JSON format: {"cn","hk","mo"}
-         */
-        private String primaryVehicleRegion;
-    }
-
-    @PostMapping(value = "/enquiryPrimaryVehicle", headers = {"x-api-key=${mpsClient.apiKey}"})
-    CommonResponse<EnquiryPrimaryVehicleResponse> enquiryPrimaryVehicle(@RequestBody EnquiryPrimaryVehicleRequest request);
 
     // 2.15. CPVACS 故障上报
     @Data

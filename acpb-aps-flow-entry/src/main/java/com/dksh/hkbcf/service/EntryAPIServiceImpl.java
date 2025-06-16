@@ -66,8 +66,7 @@ public class EntryAPIServiceImpl implements EntryAPIService{
                         .secondSearchEventTime(TimeUtil.format(ickVehicle.getSecondSearchEventTime(),"HH:mm:ss"))
                         // Brian 2025-03-10
                         .bookingId(ickVehicle.getBookingId())
-                        .handicapped(ickVehicle.getHandicapped())
-                        .primaryVehicleRegion(ickVehicle.getPrimaryVehicleRegion())                        
+                        .handicapped(ickVehicle.getHandicapped())                       
                         .build())
                 .build();
     }
@@ -93,15 +92,6 @@ public class EntryAPIServiceImpl implements EntryAPIService{
 
     @Override
     public EntryController.RequestMPSCabinResponse requestMPSCabin(EntryController.RequestMPSCabinRequest req1) {
-        // Call MPS 2.13 API to get primary vehicle region
-        MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
-            MPSClient.EnquiryPrimaryVehicleRequest.builder()
-                .bookingId(req1.getBookingId())
-                .vehicleHongkong(req1.getVehicleHongkong())
-                .vehicleMainland(req1.getVehicleMainland())
-                .vehicleMacao(req1.getVehicleMacao())
-                .build()
-        );
 
         // original MPS cabin request
         MPSClient.CommonResponse<MPSClient.RequestAllocationMpsCabinResponse> res2 = mpsClient.requestAllocationMpsCabin(ObjectMapperUtil.clone(req1, MPSClient.RequestAllocationMpsCabinRequest.class));
@@ -115,10 +105,6 @@ public class EntryAPIServiceImpl implements EntryAPIService{
         }  
         else{
             res1 = ObjectMapperUtil.clone(res2.getData(), EntryController.RequestMPSCabinResponse.class);
-
-            if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
-                res1.setPrimaryVehicleRegion(primaryVehicleRes.getData().getPrimaryVehicleRegion());
-            }
         }
 
         return res1;
@@ -143,15 +129,13 @@ public class EntryAPIServiceImpl implements EntryAPIService{
 
     @Override
     public EntryController.UpdateCPVCASCabinAvailableStatusResponse updateCPVCASCabinAvailableStatus(EntryController.UpdateCPVCASCabinAvailableStatusRequest request) {
-        try {
-          
+        try {          
             CPVACSAuthClient.CommonResponse<CPVACSAuthClient.LoginResponse> authRes = cpvacsAuthClient.login(
                 CPVACSAuthClient.LoginRequest.builder()
                     .username("demoApp")
                     .password("123456")
                     .build()
-            );
-
+            ); 
   
             CPVACSServiceClient.CommonResponse<CPVACSServiceClient.Cpvacs9Response> response = 
                 cpvacsServiceClient.cpvacs9(

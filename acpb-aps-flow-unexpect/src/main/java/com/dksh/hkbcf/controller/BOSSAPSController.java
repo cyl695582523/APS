@@ -177,7 +177,6 @@ public class BOSSAPSController {
             private String eventTime;
             private String parkingRecordId;
             private String mpsRecordId;
-            private String primaryVehicleRegion;
 
             @Data
             @Builder
@@ -211,8 +210,6 @@ public class BOSSAPSController {
         private String parkingFrom;
         private String parkingTo;
         private String lastModifiedTime;
-        // 2025-05-15 Brian
-        private String primaryVehicleRegion;
     }
 
     @Data

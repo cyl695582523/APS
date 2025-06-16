@@ -91,7 +91,6 @@ public class ICKVehicleRecordSchedule {
                         .clearanceFlag(event.getClearanceFlag())
                         .bookingId(event.getBookingId())
                         .handicapped(event.getHandicapped())
-                        .primaryVehicleRegion(event.getPrimaryVehicleRegion())
                         .build()).collect(Collectors.toList()));
 
         Instant eventDateEnd = Instant.now();
@@ -289,7 +288,7 @@ public class ICKVehicleRecordSchedule {
                     // Brian 2025-05-08 For save ick_vehicle
                     ickVehicle.setBookingId(dto.ivr().getBookingId());
                     ickVehicle.setHandicapped(dto.ivr().getHandicapped());
-                    ickVehicle.setPrimaryVehicleRegion(dto.ivr().getPrimaryVehicleRegion());
+                    
 
                     // Brian 2025-05-08 For save ick_vehicle
                     ickVehicleRepository.save(ickVehicle);

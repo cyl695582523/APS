@@ -57,7 +57,7 @@ public class EntryController {
             // Brian 2025-03-10
             private String bookingId;
             private Integer handicapped;
-            private String primaryVehicleRegion;
+         
             
         }
     }
@@ -109,7 +109,6 @@ public class EntryController {
         private Integer length;
         private Integer width;
         private Integer height;
-
         private String bookingId;        
         private Integer handicapped;
     }
@@ -127,9 +126,7 @@ public class EntryController {
         private String cabinName;
         private String assignedDatetime;
         private String bookingId;
-        private String remark;
-        // Brian 2025-03-10
-        private String primaryVehicleRegion;
+        private String remark;      
     }
 
     @PostMapping("/requestMPSCabin") //3.6 CPVACS Request MPS Cabin

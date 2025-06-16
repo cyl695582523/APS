@@ -55,7 +55,6 @@ public class CabinPickUpController {
         // Brian 2025-05-12 3.13
         private String parkingFrom;
         private String parkingTo;
-        private String primaryVehicleRegion;
     }
     // 3.13. CPVACS Enquiry MPS Vehicle Status
     @PostMapping("/enquiryVehicleStatus")
@@ -157,8 +156,6 @@ public class CabinPickUpController {
         private Integer vehicleStatus;
         private String remark;
         private String bookingId;        
-        // Brian 2025-05-12 3.15
-        private String primaryVehicleRegion;
     }
   // 3.15. CPVACS Confirm MPS Pick Up Vehicle
     @PostMapping("/confirmPickUpVehicle")

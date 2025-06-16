@@ -69,7 +69,7 @@ public class CabinOtherController {
         return cabinOtherAPIService.requestCPVACSCabinVehicleInfo(request);
     }
 
-    // 3.25	MPS Send CPVACS Assigned Pick Up Cabin Information
+    // 3.24	MPS Send CPVACS Assigned Pick Up Cabin Information
     @Data
     @Builder
     @NoArgsConstructor
@@ -99,7 +99,7 @@ public class CabinOtherController {
         return cabinOtherAPIService.sendAssignedPickupCabin(request);
     }
 
-    // 3.26. MPS Notify BOSS Vehicle Retrieve from MPS
+    // 3.25. MPS Notify BOSS Vehicle Retrieve from MPS
     @Data
     @Builder
     @NoArgsConstructor

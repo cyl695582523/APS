@@ -85,8 +85,6 @@ public class CabinDropOffController {
         private String assignedVehicleMacao;
         private String assignedDatetime;
         private String bookingId;
-        // Brian 2025-04-01 3.10
-        private String primaryVehicleRegion;
     }
 
     // 3.10. CPVACS Enquiry MPS Cabin Status
@@ -124,8 +122,6 @@ public class CabinDropOffController {
         private String vehicleMacao;
         private String bookingId;
         private String parkingRecordId;
-        // Brian 2025-05-12 3.11
-        private String primaryVehicleRegion;
     }
 
     //3.11. CPVACS Inform MPS Cabin Ready

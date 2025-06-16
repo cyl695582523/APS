@@ -41,22 +41,7 @@ public class CabinPickUpAPIServiceImpl implements CabinPickUpAPIService{
     public CabinPickUpController.EnquiryVehicleStatusResponse enquiryVehicleStatus(CabinPickUpController.EnquiryVehicleStatusRequest req1) {
         MPSClient.CommonResponse<MPSClient.QueryVehicleInfoResponse> res2 = mpsClient.queryVehicleInfo(ObjectMapperUtil.clone(req1, MPSClient.QueryVehicleInfoRequest.class));
         
-        //return ObjectMapperUtil.clone(res2.getData(), CabinPickUpController.EnquiryVehicleStatusResponse.class);
-        // Call MPS 2.13 API to get primary vehicle region
-        MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
-            MPSClient.EnquiryPrimaryVehicleRequest.builder()
-                .bookingId(res2.getData().getBookingId())
-                .vehicleHongkong(res2.getData().getVehicleHongkong())
-                .vehicleMainland(res2.getData().getVehicleMainland())
-                .vehicleMacao(res2.getData().getVehicleMacao())
-                .build()
-        );
-
-        CabinPickUpController.EnquiryVehicleStatusResponse response = ObjectMapperUtil.clone(res2.getData(), CabinPickUpController.EnquiryVehicleStatusResponse.class);
-        if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
-            response.setPrimaryVehicleRegion(primaryVehicleRes.getData().getPrimaryVehicleRegion());
-        }
-        return response;
+        return ObjectMapperUtil.clone(res2.getData(), CabinPickUpController.EnquiryVehicleStatusResponse.class);
     }
 
     @Override
@@ -108,22 +93,8 @@ public class CabinPickUpAPIServiceImpl implements CabinPickUpAPIService{
             req2.setStatus(req1.getPaymentStatus()==1?"success":"failed");
             BOSSClient.CommonResponse<BOSSClient.IntApsBoss008Response> res2 = bossClient.intApsBoss008(req1.getBookingId(), req2);
         }
-
-        // Call MPS 2.13 API to get primary vehicle region
-        MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
-            MPSClient.EnquiryPrimaryVehicleRequest.builder()
-                .bookingId(req1.getBookingId())
-                .vehicleHongkong(req1.getVehicleHongkong())
-                .vehicleMainland(req1.getVehicleMainland())
-                .vehicleMacao(req1.getVehicleMacao())
-                .build()
-        );
-
-        CabinPickUpController.ConfirmPickUpVehicleResponse response = ObjectMapperUtil.clone(res3.getData(), CabinPickUpController.ConfirmPickUpVehicleResponse.class);
-        if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
-            response.setPrimaryVehicleRegion(primaryVehicleRes.getData().getPrimaryVehicleRegion());
-        }
-        return response;
+   
+        return ObjectMapperUtil.clone(res3.getData(), CabinPickUpController.ConfirmPickUpVehicleResponse.class);
     }
 
     @Override

@@ -39,7 +39,6 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
         /*
          * 1. Retrieve booking info from MPS
          * 2. Retrieve entry and exit record from CPB           
-         * 3. Retrieve PVR from MPS
          * 4. Response
          */
         if(req1.getVehicleHongkong()==null) req1.setVehicleHongkong("");
@@ -89,21 +88,6 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
 
         Integer total = res2.getData().getTotalCount()+res3.getData().size()+res4.getData().size();
 
-        // Get PVR for each booking
-        Map<String, String> bookingPvrMap = new HashMap<>();
-        for (MPSClient.QueryReservationVehicleInfoResponse.BookingInfo bookingInfo : res2.getData().getBookingInfo()) {
-            MPSClient.CommonResponse<MPSClient.EnquiryPrimaryVehicleResponse> primaryVehicleRes = mpsClient.enquiryPrimaryVehicle(
-                MPSClient.EnquiryPrimaryVehicleRequest.builder()
-                    .bookingId(bookingInfo.getBookingId())
-                    .vehicleHongkong(bookingInfo.getVehicleHongkong())
-                    .vehicleMainland(bookingInfo.getVehicleMainland())
-                    .vehicleMacao(bookingInfo.getVehicleMacao())
-                    .build()
-            );
-            if (primaryVehicleRes != null && primaryVehicleRes.getData() != null) {
-                bookingPvrMap.put(bookingInfo.getBookingId(), primaryVehicleRes.getData().getPrimaryVehicleRegion());
-            }
-        }
 
         List<BOSSAPSController.BulkExportBookingResponse.Event> eventList =
                 res2.getData().getBookingInfo().stream().map(bookingInfo -> {
@@ -125,7 +109,7 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
                                             .cabinNo(bookingInfo.getMoreInfo().getCabinNo())
                                             .ickNo(bookingInfo.getMoreInfo().getIckNo())
                                             .build())*/                                            
-                            .primaryVehicleRegion(bookingPvrMap.get(bookingInfo.getBookingId()))
+             
                             .build();
                 }).collect(Collectors.toList());
 
@@ -150,8 +134,7 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
                     .remark(event.getRemark())
                     .eventDate(TimeUtil.formatMilli(cpbEntryBookingInfo.getEntryTime()==null?cpbEntryBookingInfo.getArrivedTime():cpbEntryBookingInfo.getEntryTime(), "yyyy/MM/dd"))
                     .eventTime(TimeUtil.formatMilli(cpbEntryBookingInfo.getEntryTime()==null?cpbEntryBookingInfo.getArrivedTime():cpbEntryBookingInfo.getEntryTime(), "HH:mm:ss"))
-                    // Brian 2025-05-15 
-                    .primaryVehicleRegion(event.getPrimaryVehicleRegion())
+                    // Brian 2025-05-15               
                     .build();
         }).toList());
 
@@ -182,7 +165,6 @@ public class BOSSAPSAPIServiceImpl implements BOSSAPSAPIService{
                     .remark(event.getRemark())
                     .eventDate(TimeUtil.formatMilli(cpbExitBookingInfo.getExitTime()==null?cpbExitBookingInfo.getArrivedTime():cpbExitBookingInfo.getExitTime(), "yyyy/MM/dd"))
                     .eventTime(TimeUtil.formatMilli(cpbExitBookingInfo.getExitTime()==null?cpbExitBookingInfo.getArrivedTime():cpbExitBookingInfo.getExitTime(), "HH:mm:ss"))
-                    .primaryVehicleRegion(event.getPrimaryVehicleRegion())
                     .build();
         }).toList());
 
