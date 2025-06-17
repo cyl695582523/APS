@@ -85,6 +85,9 @@ public class CabinDropOffController {
         private String assignedVehicleMacao;
         private String assignedDatetime;
         private String bookingId;
+        // Brian 2025-06-16
+        private String mode;
+        private String status;
     }
 
     // 3.10. CPVACS Enquiry MPS Cabin Status

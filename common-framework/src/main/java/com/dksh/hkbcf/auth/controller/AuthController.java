@@ -18,7 +18,7 @@ public class AuthController {
     AuthAPIService authAPIService;
 
     public record GrantTokenRequest(String username, String password){}
-    @Builder
+    //@Builder
     public record GrantTokenResponse(String accessToken, Instant expiresIn){}
 
     @PostMapping("/grantToken")

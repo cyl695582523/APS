@@ -34,7 +34,7 @@ public class CabinOtherAPIServiceImpl implements CabinOtherAPIService{
         return CabinOtherController.NotifyMPSIntercomTurnedOnResponse.builder().build();
     }
 
-    @Override
+    @Override 
     public CabinOtherController.RequestCPVACSCabinVehicleInfoResponse requestCPVACSCabinVehicleInfo(CabinOtherController.RequestCPVACSCabinVehicleInfoRequest req1) {
         CPVACSAuthClient.CommonResponse<CPVACSAuthClient.LoginResponse> authRes = cpvacsAuthClient.login(CPVACSAuthClient.LoginRequest.builder()
                 .username("demoApp")
@@ -46,7 +46,7 @@ public class CabinOtherAPIServiceImpl implements CabinOtherAPIService{
                 .vehicleHongkong(res2.getData().getVehicleHongkong())
                 .vehicleMacao(res2.getData().getVehicleMacao())
                 .vehicleMainland(res2.getData().getVehicleMainland())
-                .capture(res2.getData().getImagePath())
+                .capture(res2.getData().getImagePath()) // TODO: need to call new api for capture retrieval
                 .captureDatetime(TimeUtil.format(Instant.now(), "yyyy-MM-dd HH:mm:ss"))
                 .build();
     }

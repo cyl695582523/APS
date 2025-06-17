@@ -250,7 +250,7 @@ public interface MPSClient {
         private String assignedVehicleMacao;
         private String assignedDatetime;
         private String bookingId;
-        // // 2025-05-09 tbc
+
         private String mode;
         private String status;
 
